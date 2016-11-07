@@ -1,0 +1,34 @@
+openshift-master ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 openshift_hostname=10.10.10.20 openshift_ip=10.10.10.20 openshift_public_hostname=10.10.10.20 openshift_public_ip=10.10.10.20
+openshift-node1  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200 openshift_hostname=10.10.10.200 openshift_ip=10.10.10.200 openshift_public_hostname=10.10.10.200 openshift_public_ip=10.10.10.200
+openshift-node2  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201 openshift_hostname=10.10.10.201 openshift_ip=10.10.10.201 openshift_public_hostname=10.10.10.201 openshift_public_ip=10.10.10.201
+openshift-lb  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2202 openshift_hostname=10.10.10.30 openshift_ip=10.10.10.30 openshift_public_hostname=10.10.10.30 openshift_public_ip=10.10.10.30
+openshift-localhost  ansible_connection=local
+
+[OSEv3:children]
+masters
+nodes
+etcd
+lb
+
+[OSEv3:vars]
+ansible_ssh_user=vagrant
+ansible_become=yes
+debug_level=2
+deployment_type=origin
+openshift_release=v1.3
+
+[masters]
+openshift-master
+
+[etcd]
+openshift-master
+
+[lb]
+openshift-lb
+
+[nodes]
+openshift-node1 openshift_node_labels="{'region': 'primary', 'zone': 'east'}" 
+openshift-node2 openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+
+[localhost]
+openshift-localhost

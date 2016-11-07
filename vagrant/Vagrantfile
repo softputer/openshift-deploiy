@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+members = {
+  # Name     num, CPU, RAM, IP_START 
+  'etcd' => [ 1, 2, 2048, 20 ],
+  'node' => [ 2, 2, 1024, 200 ],
+  'lb' => [ 1, 1, 1024, 100 ],
+}
+
+PREFIX = "10.10.10"
+IP_RANGE = "10.11.0.0/16"
+
+Vagrant.configure("2") do |config|
+  #define Linux Type
+  config.vm.box = "centos/7"
+
+  #all machines use the same key
+  config.ssh.insert_key = false
+
+  #Iterate memeber to set up predefined hosts
+  members.each do |name, (count, cpu, ram, ipstart)|
+    (1..count).each do |i|
+      config.vm.define member = "%s-%02d-" % [name, i] do |m|
+        m.vm.hostname = member
+        config.vm.provider :virtualbox do |v|
+          v.name              = member
+          v.cpus              = cpu
+          v.memory            = ram
+          v.check_guest_additions = false
+          v.functional_vboxsf     = false
+          #v.customize ["modifyvm", :member, "--natdnshostresolver1", "on"]
+        end
+        #Host IP
+        ip = "%s.%02d" % [PREFIX, ipstart+i-1]
+        m.vm.network :private_network, ip: ip
+        
+      end
+    end
+  end
+end
