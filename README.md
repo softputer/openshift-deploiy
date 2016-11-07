@@ -1,5 +1,5 @@
 # openshift-deploy
-####This is repo is a clone of openshift-ansible
+####This repo is a clone of openshift-ansible
 
 ###Prerequisites
    - Ansibe
