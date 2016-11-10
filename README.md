@@ -2,7 +2,7 @@
 ####This repo is a clone of openshift-ansible
 
 ###Prerequisites
-   - Ansibe
+   - Ansibe <You can use `sudo pip install git+git://github.com/ansible/ansible.git@devel` to install the latest version.>
    - Virtualbox
    - vagrant == 1.8.7
    
