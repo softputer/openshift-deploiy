@@ -3,9 +3,8 @@
 
 members = {
   # Name     num, CPU, RAM, IP_START 
-  'etcd' => [ 1, 2, 2048, 20 ],
-  'node' => [ 2, 2, 1024, 200 ],
-  'lb' => [ 1, 1, 1024, 100 ],
+  'master' => [ 1, 2, 1024, 10 ],
+  'node' => [ 3, 2, 1024, 20 ],
 }
 
 PREFIX = "10.10.10"
@@ -21,7 +20,7 @@ Vagrant.configure("2") do |config|
   #Iterate memeber to set up predefined hosts
   members.each do |name, (count, cpu, ram, ipstart)|
     (1..count).each do |i|
-      config.vm.define member = "%s-%02d-" % [name, i] do |m|
+      config.vm.define member = "%s-%02d" % [name, i] do |m|
         m.vm.hostname = member
         config.vm.provider :virtualbox do |v|
           v.name              = member
